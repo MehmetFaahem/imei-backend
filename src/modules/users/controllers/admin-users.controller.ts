@@ -13,10 +13,10 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Owner')
+@ApiTags('User')
 @ApiResponse({
   status: 201,
-  description: 'Owner has been successfully created.',
+  description: 'User has been successfully created.',
 })
 @ApiResponse({
   status: 404,
