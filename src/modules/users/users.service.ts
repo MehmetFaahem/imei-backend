@@ -1,21 +1,59 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadGatewayException,
+  BadRequestException,
+  Injectable,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, userDocument } from './entities/user.entity';
 import { Model } from 'mongoose';
+import * as bcrypt from 'bcrypt';
+import { JWTService } from 'src/common/services/jwt.service';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name)
     private userModel: Model<userDocument>,
+    private jwtService: JWTService,
   ) {}
 
-  public async create(createUserDto: CreateUserDto) {
-    const newUser = await this.userModel.create({ ...createUserDto });
+  public async create(createUserDto: CreateUserDto): Promise<User> {
+    const newUser = await this.userModel.create(createUserDto);
+    newUser.password = await this.hashPassword(createUserDto.password);
     await newUser.save();
     return newUser;
+  }
+
+  public async loginUser(dto: LoginUserDto) {
+    const user: User = await this.userModel.findOne({ username: dto.username });
+    if (!user)
+      throw new BadGatewayException('User not found with the provided email');
+    const passMatch = await this.comparePassword(dto.password, user.password);
+    if (!passMatch)
+      throw new BadRequestException("Your password didn't matched!");
+    const accessToken = await this.jwtService.genAccessToken({
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+    });
+    const refreshToken = await this.jwtService.genRefreshToken(user.email);
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  private async hashPassword(password: string): Promise<string> {
+    return await bcrypt.hash(password, 10);
+  }
+  private async comparePassword(
+    comparePassword: string,
+    hash: string,
+  ): Promise<boolean> {
+    return await bcrypt.compare(comparePassword, hash);
   }
 
   async findAllByAdmin() {

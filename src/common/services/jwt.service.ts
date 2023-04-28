@@ -3,10 +3,9 @@ import * as jwt from 'jsonwebtoken';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 export interface TokenPayload {
-  fullName: string;
+  name: string;
   email: string;
-  phoneNo: string;
-  role: string;
+  phone: string;
 }
 
 @Injectable()
@@ -18,7 +17,7 @@ export class JWTService {
 
   public async genAccessToken(payload: TokenPayload): Promise<string> {
     const token = jwt.sign(payload, this.jwtSecret, {
-      expiresIn: '1h', // Equivalent to 1 hours
+      expiresIn: '30d', // Equivalent to 1 hours
       algorithm: 'HS512',
     });
     return token;
