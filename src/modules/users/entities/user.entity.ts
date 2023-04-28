@@ -22,11 +22,18 @@ export class User {
   phone: string;
 
   @Prop({
-    required: [true, 'gender must be filled'],
+    required: [true, 'email must be filled'],
     type: String,
     trim: true,
   })
-  gender: string;
+  email: string;
+
+  @Prop({
+    required: [true, 'password must be filled'],
+    type: String,
+    trim: true,
+  })
+  password: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

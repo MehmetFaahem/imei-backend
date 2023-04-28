@@ -22,7 +22,7 @@ export class UsersService {
     const users = await this.userModel
       .find({})
       .sort({ created_at: -1 })
-      .select(['name', 'phone', 'gender']);
+      .select(['name', 'phone', 'email', 'password']);
     return users;
   }
 
@@ -30,14 +30,14 @@ export class UsersService {
     const users = await this.userModel
       .find({})
       .sort({ created_at: -1 })
-      .select(['name', 'phone', 'gender']);
+      .select(['name', 'phone', 'email', 'password']);
     return users;
   }
 
   async findOneByAdmin(id: string) {
     const user = await this.userModel
       .findOne({ _id: id })
-      .select(['name', 'phone', 'gender']);
+      .select(['name', 'phone', 'email', 'password']);
 
     if (!user) throw new BadRequestException('Invalid ID');
     return user;
@@ -46,7 +46,7 @@ export class UsersService {
   async findOneByPublic(id: string) {
     const user = await this.userModel
       .findOne({ _id: id })
-      .select(['name', 'phone', 'gender']);
+      .select(['name', 'phone', 'email', 'password']);
 
     if (!user) throw new BadRequestException('Invalid ID');
     return user;
@@ -58,7 +58,7 @@ export class UsersService {
   ): Promise<userDocument> {
     const user = await this.userModel
       .findOne({ _id: id })
-      .select(['name', 'phone', 'gender']);
+      .select(['name', 'phone', 'email', 'password']);
 
     if (!user) throw new BadRequestException('Invalid ID');
 
@@ -72,12 +72,11 @@ export class UsersService {
   }
 
   async removeByAdmin(id: string) {
-    const user = await this.userModel.findOneAndRemove({ _id: id }).select[
-      '_id'
-    ];
+    const user = await this.userModel
+      .findOneAndRemove({ _id: id })
+      .select(['_id']);
 
     if (!user) throw new BadRequestException('Invalid ID');
-
     return user;
   }
 }
