@@ -6,6 +6,7 @@ import configuration from './config/configuration';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './modules/users/users.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
+import { GlobalModule } from './global.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ReviewsModule } from './modules/reviews/reviews.module';
       useFactory: async (config: ConfigService) => config.get('database'),
       inject: [ConfigService],
     }),
+    GlobalModule,
     UsersModule,
     ReviewsModule,
   ],
