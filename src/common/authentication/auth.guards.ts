@@ -19,10 +19,9 @@ export class AuthGuard implements CanActivate {
     const token = req.headers['authorization'];
     const user = await this.jwtService.validateToken(token);
     req.user = {
-      fullName: user.fullName,
+      name: user.name,
       email: user.email,
-      phoneNo: user.phoneNo,
-      role: user.role,
+      phone: user.phone,
     };
     return true;
   }

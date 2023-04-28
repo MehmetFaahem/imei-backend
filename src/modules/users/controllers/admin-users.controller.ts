@@ -12,6 +12,7 @@ import { UsersService } from '../users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { LoginUserDto } from '../dto/login-user.dto';
 
 @ApiTags('User')
 @ApiResponse({
@@ -36,6 +37,19 @@ export class AdminUsersController {
     return {
       message: 'User Created Successfully',
       data: user,
+    };
+  }
+
+  @ApiOperation({ summary: 'User login' })
+  @ApiBody({
+    type: LoginUserDto,
+  })
+  @Post('/login')
+  async loginUser(@Body() dto: LoginUserDto) {
+    const data = await this.usersService.loginUser(dto);
+    return {
+      message: 'User logged successfully',
+      data: data,
     };
   }
 
