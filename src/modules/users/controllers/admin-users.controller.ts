@@ -13,6 +13,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginUserDto } from '../dto/login-user.dto';
+import { CreateCartedProdutsDto } from '../dto/create-user-carted.dto';
 
 @ApiTags('User')
 @ApiResponse({
@@ -50,6 +51,37 @@ export class AdminUsersController {
     return {
       message: 'User logged successfully',
       data: data,
+    };
+  }
+
+  @ApiOperation({ summary: 'Add Carted Produts' })
+  @ApiBody({
+    type: CreateCartedProdutsDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'product has been successfully added.',
+  })
+  @Post('/carted')
+  async addCartedProducts(@Body() createDto: CreateCartedProdutsDto) {
+    const ourService = await this.usersService.addCartedProducts(createDto);
+    return {
+      message: 'carted successfully',
+      data: ourService,
+    };
+  }
+
+  @ApiOperation({ summary: 'Remove Carted Produts' })
+  @ApiResponse({
+    status: 201,
+    description: 'product has been successfully removed',
+  })
+  @Delete('/carted/:name')
+  async removeCartedProducts(@Param('name') name: string) {
+    const ourService = await this.usersService.removeCartedProducts(name);
+    return {
+      message: 'removed successfully',
+      data: ourService,
     };
   }
 

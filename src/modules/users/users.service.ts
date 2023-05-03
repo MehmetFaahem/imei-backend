@@ -11,6 +11,7 @@ import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JWTService } from 'src/common/services/jwt.service';
+import { CreateCartedProdutsDto } from './dto/create-user-carted.dto';
 
 @Injectable()
 export class UsersService {
@@ -25,6 +26,48 @@ export class UsersService {
     newUser.password = await this.hashPassword(createUserDto.password);
     await newUser.save();
     return newUser;
+  }
+
+  public async addCartedProducts(createDto: CreateCartedProdutsDto) {
+    const exists = await this.userModel
+      .findOne({
+        _id: createDto.user_id,
+      })
+      .select('_id');
+    if (!exists) throw new BadRequestException('Invalid user id.');
+    await this.userModel.updateOne(
+      { _id: exists._id },
+      {
+        $addToSet: {
+          carted: {
+            name: createDto.name,
+            company: createDto.company,
+            category: createDto.category,
+            price: createDto.price,
+            quantity: createDto.quantity,
+          },
+        },
+      },
+    );
+    return exists;
+  }
+
+  public async removeCartedProducts(name: string) {
+    const exists = await this.userModel.findOne({
+      'carted.name': name,
+    });
+    if (!exists) throw new BadRequestException('Invalid user id.');
+    await this.userModel.updateOne(
+      { _id: exists._id },
+      {
+        $pull: {
+          carted: {
+            name: name,
+          },
+        },
+      },
+    );
+    return exists;
   }
 
   public async loginUser(dto: LoginUserDto) {
@@ -60,7 +103,7 @@ export class UsersService {
     const users = await this.userModel
       .find({})
       .sort({ created_at: -1 })
-      .select(['name', 'phone', 'email', 'password']);
+      .select(['name', 'phone', 'email', 'password', 'carted']);
     return users;
   }
 
@@ -68,14 +111,14 @@ export class UsersService {
     const users = await this.userModel
       .find({})
       .sort({ created_at: -1 })
-      .select(['name', 'phone', 'email', 'password']);
+      .select(['name', 'phone', 'email', 'password', 'carted']);
     return users;
   }
 
   async findOneByAdmin(id: string) {
     const user = await this.userModel
       .findOne({ _id: id })
-      .select(['name', 'phone', 'email', 'password']);
+      .select(['name', 'phone', 'email', 'password', 'carted']);
 
     if (!user) throw new BadRequestException('Invalid ID');
     return user;
@@ -84,7 +127,7 @@ export class UsersService {
   async findOneByPublic(id: string) {
     const user = await this.userModel
       .findOne({ _id: id })
-      .select(['name', 'phone', 'email', 'password']);
+      .select(['name', 'phone', 'email', 'password', 'carted']);
 
     if (!user) throw new BadRequestException('Invalid ID');
     return user;
@@ -96,7 +139,7 @@ export class UsersService {
   ): Promise<userDocument> {
     const user = await this.userModel
       .findOne({ _id: id })
-      .select(['name', 'phone', 'email', 'password']);
+      .select(['name', 'phone', 'email', 'password', 'carted']);
 
     if (!user) throw new BadRequestException('Invalid ID');
 

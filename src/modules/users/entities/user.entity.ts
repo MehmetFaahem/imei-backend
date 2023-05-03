@@ -2,6 +2,25 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type userDocument = User & Document;
 
+@Schema()
+export class CartedProducts {
+  @Prop({ type: String })
+  name: string;
+
+  @Prop({ type: String })
+  company: string;
+
+  @Prop({ type: String })
+  category: string;
+
+  @Prop({ type: String })
+  price: string;
+
+  @Prop({ type: Number })
+  quantity: number;
+}
+const CartedProductsSchema = SchemaFactory.createForClass(CartedProducts);
+
 @Schema({
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
   collection: 'users',
@@ -34,6 +53,13 @@ export class User {
     trim: true,
   })
   password: string;
+
+  @Prop({
+    required: [false, 'projects should not be empty'],
+    type: [CartedProductsSchema],
+    default: [],
+  })
+  carted: CartedProducts[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
