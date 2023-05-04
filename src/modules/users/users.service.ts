@@ -71,7 +71,7 @@ export class UsersService {
   }
 
   public async loginUser(dto: LoginUserDto) {
-    const user: User = await this.userModel.findOne({ username: dto.username });
+    const user: User = await this.userModel.findOne({ name: dto.name });
     if (!user)
       throw new BadGatewayException('User not found with the provided email');
     const passMatch = await this.comparePassword(dto.password, user.password);
