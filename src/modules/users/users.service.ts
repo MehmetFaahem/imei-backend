@@ -79,10 +79,9 @@ export class UsersService {
       throw new BadRequestException("Your password didn't matched!");
     const accessToken = await this.jwtService.genAccessToken({
       name: user.name,
-      email: user.email,
       phone: user.phone,
     });
-    const refreshToken = await this.jwtService.genRefreshToken(user.email);
+    const refreshToken = await this.jwtService.genRefreshToken(user.phone);
     return {
       accessToken,
       refreshToken,

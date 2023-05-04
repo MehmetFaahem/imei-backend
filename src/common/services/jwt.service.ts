@@ -4,7 +4,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 export interface TokenPayload {
   name: string;
-  email: string;
   phone: string;
 }
 
@@ -23,8 +22,8 @@ export class JWTService {
     return token;
   }
 
-  public async genRefreshToken(email: string) {
-    const token = jwt.sign({ email }, this.jwtSecret, {
+  public async genRefreshToken(phone: string) {
+    const token = jwt.sign({ phone }, this.jwtSecret, {
       expiresIn: 30 * 24 * 60 * 60, // Equivalent to 30 Days
       algorithm: 'HS512',
     });
