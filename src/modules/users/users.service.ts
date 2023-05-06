@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JWTService } from 'src/common/services/jwt.service';
 import { CreateCartedProdutsDto } from './dto/create-user-carted.dto';
+import { CreateFavouriteDto } from './dto/create-user-favourite.dto';
 
 @Injectable()
 export class UsersService {
@@ -52,6 +53,32 @@ export class UsersService {
     return exists;
   }
 
+  public async addFavouriteProducts(createDto: CreateFavouriteDto) {
+    const exists = await this.userModel
+      .findOne({
+        _id: createDto.user_id,
+      })
+      .select('_id');
+    if (!exists) throw new BadRequestException('Invalid user id.');
+    await this.userModel.updateOne(
+      { _id: exists._id },
+      {
+        $addToSet: {
+          favourites: {
+            name: createDto.name,
+            company: createDto.company,
+            category: createDto.category,
+            price: createDto.price,
+            rating: createDto.rating,
+            indication: createDto.indication,
+            pharmacology: createDto.pharmacology,
+          },
+        },
+      },
+    );
+    return exists;
+  }
+
   public async removeCartedProducts(name: string) {
     const exists = await this.userModel.findOne({
       'carted.name': name,
@@ -62,6 +89,24 @@ export class UsersService {
       {
         $pull: {
           carted: {
+            name: name,
+          },
+        },
+      },
+    );
+    return exists;
+  }
+
+  public async removeFavouriteProducts(name: string) {
+    const exists = await this.userModel.findOne({
+      'favourites.name': name,
+    });
+    if (!exists) throw new BadRequestException('Invalid user id.');
+    await this.userModel.updateOne(
+      { _id: exists._id },
+      {
+        $pull: {
+          favourites: {
             name: name,
           },
         },

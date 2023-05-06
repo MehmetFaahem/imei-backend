@@ -14,6 +14,7 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginUserDto } from '../dto/login-user.dto';
 import { CreateCartedProdutsDto } from '../dto/create-user-carted.dto';
+import { CreateFavouriteDto } from '../dto/create-user-favourite.dto';
 
 @ApiTags('User')
 @ApiResponse({
@@ -71,6 +72,23 @@ export class AdminUsersController {
     };
   }
 
+  @ApiOperation({ summary: 'Add Favourite Produts' })
+  @ApiBody({
+    type: CreateFavouriteDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'product has been successfully added.',
+  })
+  @Post('/favour')
+  async addFavouriteProducts(@Body() createDto: CreateFavouriteDto) {
+    const ourService = await this.usersService.addFavouriteProducts(createDto);
+    return {
+      message: 'favoured successfully',
+      data: ourService,
+    };
+  }
+
   @ApiOperation({ summary: 'Remove Carted Produts' })
   @ApiResponse({
     status: 201,
@@ -79,6 +97,20 @@ export class AdminUsersController {
   @Delete('/carted/:name')
   async removeCartedProducts(@Param('name') name: string) {
     const ourService = await this.usersService.removeCartedProducts(name);
+    return {
+      message: 'removed successfully',
+      data: ourService,
+    };
+  }
+
+  @ApiOperation({ summary: 'Remove Favoured Produts' })
+  @ApiResponse({
+    status: 201,
+    description: 'product has been successfully removed',
+  })
+  @Delete('/favour/:name')
+  async removeFavouriteProducts(@Param('name') name: string) {
+    const ourService = await this.usersService.removeFavouriteProducts(name);
     return {
       message: 'removed successfully',
       data: ourService,
