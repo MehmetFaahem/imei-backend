@@ -43,7 +43,7 @@ export class CreateFavouriteDto {
   indication: string;
 
   @ApiProperty()
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
   pharmacology: string;
 }
