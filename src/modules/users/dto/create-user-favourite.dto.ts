@@ -45,5 +45,5 @@ export class CreateFavouriteDto {
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  pharmacology: number;
+  pharmacology: string;
 }
