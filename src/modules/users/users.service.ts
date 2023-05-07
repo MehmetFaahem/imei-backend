@@ -147,7 +147,7 @@ export class UsersService {
     const users = await this.userModel
       .find({})
       .sort({ created_at: -1 })
-      .select(['name', 'phone', 'email', 'password', 'carted']);
+      .select(['name', 'phone', 'email', 'password', 'carted', 'favourites']);
     return users;
   }
 
@@ -155,14 +155,14 @@ export class UsersService {
     const users = await this.userModel
       .find({})
       .sort({ created_at: -1 })
-      .select(['name', 'phone', 'email', 'password', 'carted']);
+      .select(['name', 'phone', 'email', 'password', 'carted', 'favourites']);
     return users;
   }
 
   async findOneByAdmin(id: string) {
     const user = await this.userModel
       .findOne({ _id: id })
-      .select(['name', 'phone', 'email', 'password', 'carted']);
+      .select(['name', 'phone', 'email', 'password', 'carted', 'favourites']);
 
     if (!user) throw new BadRequestException('Invalid ID');
     return user;
@@ -171,7 +171,7 @@ export class UsersService {
   async findOneByPublic(id: string) {
     const user = await this.userModel
       .findOne({ _id: id })
-      .select(['name', 'phone', 'email', 'password', 'carted']);
+      .select(['name', 'phone', 'email', 'password', 'carted', 'favourites']);
 
     if (!user) throw new BadRequestException('Invalid ID');
     return user;
@@ -183,7 +183,7 @@ export class UsersService {
   ): Promise<userDocument> {
     const user = await this.userModel
       .findOne({ _id: id })
-      .select(['name', 'phone', 'email', 'password', 'carted']);
+      .select(['name', 'phone', 'email', 'password', 'carted', 'favourites']);
 
     if (!user) throw new BadRequestException('Invalid ID');
 
