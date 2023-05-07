@@ -88,7 +88,7 @@ export class User {
 
   @Prop({
     required: [false, 'projects should not be empty'],
-    type: [CartedProductsSchema],
+    type: [FavouredProductsSchema],
     default: [],
   })
   favourites: FavouredProducts[];
