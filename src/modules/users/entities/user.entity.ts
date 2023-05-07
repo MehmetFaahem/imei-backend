@@ -21,6 +21,31 @@ export class CartedProducts {
 }
 const CartedProductsSchema = SchemaFactory.createForClass(CartedProducts);
 
+@Schema()
+export class FavouredProducts {
+  @Prop({ type: String })
+  name: string;
+
+  @Prop({ type: String })
+  company: string;
+
+  @Prop({ type: String })
+  category: string;
+
+  @Prop({ type: String })
+  price: string;
+
+  @Prop({ type: Number })
+  rating: number;
+
+  @Prop({ type: String })
+  indication: string;
+
+  @Prop({ type: String })
+  pharmacology: string;
+}
+const FavouredProductsSchema = SchemaFactory.createForClass(FavouredProducts);
+
 @Schema({
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
   collection: 'users',
@@ -60,6 +85,13 @@ export class User {
     default: [],
   })
   carted: CartedProducts[];
+
+  @Prop({
+    required: [false, 'projects should not be empty'],
+    type: [CartedProductsSchema],
+    default: [],
+  })
+  favourites: FavouredProducts[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
