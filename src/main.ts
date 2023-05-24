@@ -53,9 +53,7 @@ async function bootstrap() {
   app.setGlobalPrefix(appVersion);
 
   const port = config.port || 3000;
-  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
-    prefix: '/uploads/',
-  });
+
   await app.listen(port);
   Logger.log(port, 'AppsRunningPort');
 }

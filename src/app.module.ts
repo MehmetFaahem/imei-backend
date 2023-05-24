@@ -23,9 +23,7 @@ import { join } from 'path';
       useFactory: async (config: ConfigService) => config.get('database'),
       inject: [ConfigService],
     }),
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '.', 'uploads'),
-    // }),
+
     GlobalModule,
     UsersModule,
     ReviewsModule,
