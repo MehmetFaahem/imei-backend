@@ -53,7 +53,6 @@ async function bootstrap() {
   app.setGlobalPrefix(appVersion);
 
   const port = config.port || 3000;
-
   await app.listen(port);
   Logger.log(port, 'AppsRunningPort');
 }
