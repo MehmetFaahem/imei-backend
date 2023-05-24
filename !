@@ -1,0 +1,29 @@
+Revert "added"
+
+This reverts commit e586ff13e05146dc28d5347e7dca036f56e927ba.
+
+# Conflicts:
+#	src/app.module.ts
+#	src/main.ts
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch main
+# Your branch is up to date with 'origin/main'.
+#
+# Revert currently in progress.
+#
+# Changes to be committed:
+#	modified:   package-lock.json
+#	modified:   package.json
+#	modified:   src/app.module.ts
+#	modified:   src/main.ts
+#	modified:   src/modules/users/controllers/admin-users.controller.ts
+#	deleted:    src/modules/users/dto/create-user-prescription.dto.ts
+#	modified:   src/modules/users/entities/user.entity.ts
+#	modified:   src/modules/users/users.service.ts
+#
+# Changes not staged for commit:
+#	modified:   src/app.module.ts
+#
