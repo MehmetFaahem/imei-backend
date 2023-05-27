@@ -22,6 +22,13 @@ export class CartedProducts {
 const CartedProductsSchema = SchemaFactory.createForClass(CartedProducts);
 
 @Schema()
+export class UserPrescription {
+  @Prop({ type: String })
+  image: string;
+}
+const UserPrescriptionSchema = SchemaFactory.createForClass(UserPrescription);
+
+@Schema()
 export class FavouredProducts {
   @Prop({ type: String })
   name: string;
@@ -92,6 +99,13 @@ export class User {
     default: [],
   })
   favourites: FavouredProducts[];
+
+  @Prop({
+    required: [false, 'prescriptions should not be empty'],
+    type: [UserPrescriptionSchema],
+    default: [],
+  })
+  prescriptions: UserPrescription[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

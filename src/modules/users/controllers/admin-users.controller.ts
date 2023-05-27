@@ -7,14 +7,25 @@ import {
   Param,
   Delete,
   Put,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { UsersService } from '../users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { LoginUserDto } from '../dto/login-user.dto';
 import { CreateCartedProdutsDto } from '../dto/create-user-carted.dto';
 import { CreateFavouriteDto } from '../dto/create-user-favourite.dto';
+import { CreateUserPrescriptionDto } from '../dto/create-user-prescription.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { imageOptions } from 'src/common/decorator/custom-validation.decorator';
 
 @ApiTags('User')
 @ApiResponse({
@@ -39,6 +50,31 @@ export class AdminUsersController {
     return {
       message: 'User Created Successfully',
       data: user,
+    };
+  }
+
+  @Post('/prescriptions')
+  @ApiOperation({ summary: 'Create a Service Project' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    type: CreateUserPrescriptionDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Service Project has been successfully created.',
+  })
+  @UseInterceptors(FileInterceptor('image', { limits: { fileSize: 20000000 } }))
+  async createServiceProject(
+    @UploadedFile() image: Express.Multer.File,
+    @Body() createDto: CreateUserPrescriptionDto,
+  ) {
+    const ourService = await this.usersService.createPrescription(
+      image,
+      createDto,
+    );
+    return {
+      message: 'Service project created successfully.',
+      data: ourService,
     };
   }
 
