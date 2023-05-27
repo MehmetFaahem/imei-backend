@@ -63,7 +63,7 @@ export class AdminUsersController {
     status: 201,
     description: 'Service Project has been successfully created.',
   })
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(FileInterceptor('image', { limits: { fileSize: 20000000 } }))
   async createServiceProject(
     @UploadedFile() image: Express.Multer.File,
     @Body() createDto: CreateUserPrescriptionDto,
