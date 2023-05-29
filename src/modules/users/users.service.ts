@@ -16,6 +16,7 @@ import { CreateFavouriteDto } from './dto/create-user-favourite.dto';
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryResponse } from '../../common/cloudinary/cloudinary/cloudinary-response';
 import { CreateUserPrescriptionDto } from './dto/create-user-prescription.dto';
+import { CreateCustomsDto } from './dto/create-user-customs.dto';
 const streamifier = require('streamifier');
 
 @Injectable()
@@ -82,6 +83,29 @@ export class UsersService {
             category: createDto.category,
             price: createDto.price,
             quantity: createDto.quantity,
+          },
+        },
+      },
+    );
+    return exists;
+  }
+
+  public async addCustoms(createDto: CreateCustomsDto) {
+    const exists = await this.userModel
+      .findOne({
+        _id: createDto.user_id,
+      })
+      .select('_id');
+    if (!exists) throw new BadRequestException('Invalid user id.');
+    await this.userModel.updateOne(
+      { _id: exists._id },
+      {
+        $addToSet: {
+          customs: {
+            product_name: createDto.product_name,
+            company_name: createDto.company_name,
+            power: createDto.power,
+            additional: createDto.additional,
           },
         },
       },

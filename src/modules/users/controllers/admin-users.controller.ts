@@ -26,6 +26,7 @@ import { CreateFavouriteDto } from '../dto/create-user-favourite.dto';
 import { CreateUserPrescriptionDto } from '../dto/create-user-prescription.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { imageOptions } from 'src/common/decorator/custom-validation.decorator';
+import { CreateCustomsDto } from '../dto/create-user-customs.dto';
 
 @ApiTags('User')
 @ApiResponse({
@@ -104,6 +105,23 @@ export class AdminUsersController {
     const ourService = await this.usersService.addCartedProducts(createDto);
     return {
       message: 'carted successfully',
+      data: ourService,
+    };
+  }
+
+  @ApiOperation({ summary: 'Add Customs' })
+  @ApiBody({
+    type: CreateCustomsDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'product has been successfully added.',
+  })
+  @Post('/customs')
+  async addCustoms(@Body() createDto: CreateCustomsDto) {
+    const ourService = await this.usersService.addCustoms(createDto);
+    return {
+      message: 'customed successfully',
       data: ourService,
     };
   }
