@@ -38,6 +38,19 @@ export class CustomOrders {
 const CustomOrdersSchema = SchemaFactory.createForClass(CustomOrders);
 
 @Schema()
+export class Orders {
+  @Prop({ type: String, default: Date.now() })
+  order_id: string;
+
+  @Prop({ type: [CartedProductsSchema] })
+  products: CartedProducts[];
+
+  @Prop({ type: String })
+  total: string;
+}
+const OrdersSchema = SchemaFactory.createForClass(Orders);
+
+@Schema()
 export class UserPrescription {
   @Prop({ type: String })
   image: string;
@@ -129,6 +142,13 @@ export class User {
     default: [],
   })
   customs: CustomOrders[];
+
+  @Prop({
+    required: [false, 'orders should not be empty'],
+    type: [OrdersSchema],
+    default: [],
+  })
+  orders: Orders[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -15,7 +15,6 @@ export class CreateCustomsDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @IsPhoneNumber()
   company_name: string;
 
   @ApiProperty()

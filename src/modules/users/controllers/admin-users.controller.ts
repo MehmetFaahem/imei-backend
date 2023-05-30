@@ -27,6 +27,7 @@ import { CreateUserPrescriptionDto } from '../dto/create-user-prescription.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { imageOptions } from 'src/common/decorator/custom-validation.decorator';
 import { CreateCustomsDto } from '../dto/create-user-customs.dto';
+import { CreateOrdersDto } from '../dto/create-user-orders.dto';
 
 @ApiTags('User')
 @ApiResponse({
@@ -122,6 +123,51 @@ export class AdminUsersController {
     const ourService = await this.usersService.addCustoms(createDto);
     return {
       message: 'customed successfully',
+      data: ourService,
+    };
+  }
+
+  @ApiOperation({ summary: 'Add Orders' })
+  @ApiBody({
+    type: CreateOrdersDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'product has been successfully added.',
+  })
+  @Post('/orders')
+  async addOrders(@Body() createDto: CreateOrdersDto) {
+    const ourService = await this.usersService.addOrders(createDto);
+    return {
+      message: 'ordered successfully',
+      data: ourService,
+    };
+  }
+
+  @ApiOperation({ summary: 'Remove Customed Produts' })
+  @ApiResponse({
+    status: 201,
+    description: 'product has been successfully removed',
+  })
+  @Delete('/customs/:name')
+  async removeCustoms(@Param('name') name: string) {
+    const ourService = await this.usersService.removeCustoms(name);
+    return {
+      message: 'removed successfully',
+      data: ourService,
+    };
+  }
+
+  @ApiOperation({ summary: 'Remove ordered Produts' })
+  @ApiResponse({
+    status: 201,
+    description: 'product has been successfully removed',
+  })
+  @Delete('/orders/:id')
+  async removeOrders(@Param('id') id: string) {
+    const ourService = await this.usersService.removeOrders(id);
+    return {
+      message: 'removed successfully',
       data: ourService,
     };
   }

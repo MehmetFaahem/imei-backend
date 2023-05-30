@@ -17,6 +17,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryResponse } from '../../common/cloudinary/cloudinary/cloudinary-response';
 import { CreateUserPrescriptionDto } from './dto/create-user-prescription.dto';
 import { CreateCustomsDto } from './dto/create-user-customs.dto';
+import { CreateOrdersDto } from './dto/create-user-orders.dto';
 const streamifier = require('streamifier');
 
 @Injectable()
@@ -106,6 +107,63 @@ export class UsersService {
             company_name: createDto.company_name,
             power: createDto.power,
             additional: createDto.additional,
+          },
+        },
+      },
+    );
+    return exists;
+  }
+
+  public async addOrders(createDto: CreateOrdersDto) {
+    const exists = await this.userModel
+      .findOne({
+        _id: createDto.user_id,
+      })
+      .select('_id');
+    if (!exists) throw new BadRequestException('Invalid user id.');
+    await this.userModel.updateOne(
+      { _id: exists._id },
+      {
+        $addToSet: {
+          orders: {
+            products: createDto.products,
+            total: createDto.total,
+          },
+        },
+      },
+    );
+    return exists;
+  }
+
+  public async removeOrders(id: string) {
+    const exists = await this.userModel.findOne({
+      'orders.order_id': id,
+    });
+    if (!exists) throw new BadRequestException('Invalid user id.');
+    await this.userModel.updateOne(
+      { _id: exists._id },
+      {
+        $pull: {
+          orders: {
+            order_id: id,
+          },
+        },
+      },
+    );
+    return exists;
+  }
+
+  public async removeCustoms(name: string) {
+    const exists = await this.userModel.findOne({
+      'customs.product_name': name,
+    });
+    if (!exists) throw new BadRequestException('Invalid user id.');
+    await this.userModel.updateOne(
+      { _id: exists._id },
+      {
+        $pull: {
+          customs: {
+            product_name: name,
           },
         },
       },
@@ -215,6 +273,8 @@ export class UsersService {
         'carted',
         'favourites',
         'prescriptions',
+        'customs',
+        'orders',
       ]);
     return users;
   }
@@ -230,8 +290,9 @@ export class UsersService {
         'password',
         'carted',
         'favourites',
-
         'prescriptions',
+        'customs',
+        'orders',
       ]);
     return users;
   }
@@ -247,6 +308,8 @@ export class UsersService {
         'carted',
         'favourites',
         'prescriptions',
+        'customs',
+        'orders',
       ]);
 
     if (!user) throw new BadRequestException('Invalid ID');
@@ -264,6 +327,8 @@ export class UsersService {
         'carted',
         'favourites',
         'prescriptions',
+        'customs',
+        'orders',
       ]);
 
     if (!user) throw new BadRequestException('Invalid ID');
@@ -284,6 +349,8 @@ export class UsersService {
         'carted',
         'favourites',
         'prescriptions',
+        'customs',
+        'orders',
       ]);
 
     if (!user) throw new BadRequestException('Invalid ID');
