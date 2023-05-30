@@ -16,4 +16,9 @@ export class CreateOrdersDto {
   @IsString()
   @IsNotEmpty()
   total: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  delivery_method: string;
 }

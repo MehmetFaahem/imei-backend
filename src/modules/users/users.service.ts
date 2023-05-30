@@ -128,6 +128,7 @@ export class UsersService {
           orders: {
             products: createDto.products,
             total: createDto.total,
+            delivery_method: createDto.delivery_method,
           },
         },
       },

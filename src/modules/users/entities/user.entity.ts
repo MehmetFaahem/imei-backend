@@ -47,6 +47,9 @@ export class Orders {
 
   @Prop({ type: String })
   total: string;
+
+  @Prop({ type: String })
+  delivery_method: string;
 }
 const OrdersSchema = SchemaFactory.createForClass(Orders);
 
