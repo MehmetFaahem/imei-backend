@@ -42,11 +42,8 @@ export class Orders {
   @Prop({ type: String, default: Date.now() })
   order_id: string;
 
-  @Prop({ type: [CartedProductsSchema] })
-  products: CartedProducts[];
-
-  @Prop({ type: String })
-  total: string;
+  @Prop({ type: Number })
+  total: number;
 
   @Prop({ type: String })
   delivery_method: string;

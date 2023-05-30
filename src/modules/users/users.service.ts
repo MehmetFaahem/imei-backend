@@ -126,7 +126,6 @@ export class UsersService {
       {
         $addToSet: {
           orders: {
-            products: createDto.products,
             total: createDto.total,
             delivery_method: createDto.delivery_method,
           },
