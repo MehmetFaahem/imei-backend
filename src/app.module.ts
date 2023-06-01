@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './modules/users/users.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { GlobalModule } from './global.module';
+import { ProductsModule } from './modules/products/products.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { GlobalModule } from './global.module';
     GlobalModule,
     UsersModule,
     ReviewsModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
