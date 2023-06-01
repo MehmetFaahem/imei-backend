@@ -27,4 +27,9 @@ export class CreateOrdersDto {
   @IsString()
   @IsNotEmpty()
   order_id: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  order_date: string;
 }
