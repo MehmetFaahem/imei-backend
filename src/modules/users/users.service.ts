@@ -184,8 +184,8 @@ export class UsersService {
       {
         $addToSet: {
           favourites: {
-            name: createDto.product_name,
-            company: createDto.company_name,
+            product_name: createDto.product_name,
+            company_name: createDto.company_name,
             category: createDto.category,
             price: createDto.price,
             indication: createDto.indication,
@@ -217,7 +217,7 @@ export class UsersService {
 
   public async removeFavouriteProducts(name: string) {
     const exists = await this.userModel.findOne({
-      'favourites.name': name,
+      'favourites.product_name': name,
     });
     if (!exists) throw new BadRequestException('Invalid user id.');
     await this.userModel.updateOne(
@@ -225,7 +225,7 @@ export class UsersService {
       {
         $pull: {
           favourites: {
-            name: name,
+            product_name: name,
           },
         },
       },
