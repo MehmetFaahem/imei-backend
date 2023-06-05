@@ -184,11 +184,10 @@ export class UsersService {
       {
         $addToSet: {
           favourites: {
-            name: createDto.name,
-            company: createDto.company,
+            name: createDto.product_name,
+            company: createDto.company_name,
             category: createDto.category,
             price: createDto.price,
-            rating: createDto.rating,
             indication: createDto.indication,
             pharmacology: createDto.pharmacology,
           },

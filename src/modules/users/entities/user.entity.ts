@@ -63,19 +63,16 @@ const UserPrescriptionSchema = SchemaFactory.createForClass(UserPrescription);
 @Schema()
 export class FavouredProducts {
   @Prop({ type: String })
-  name: string;
+  product_name: string;
 
   @Prop({ type: String })
-  company: string;
+  company_name: string;
 
   @Prop({ type: String })
   category: string;
 
   @Prop({ type: String })
   price: string;
-
-  @Prop({ type: Number })
-  rating: number;
 
   @Prop({ type: String })
   indication: string;
