@@ -10,17 +10,12 @@ export class CreateFavouriteDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  id: string;
+  product_name: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  name: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  company: string;
+  company_name: string;
 
   @ApiProperty()
   @IsString()
@@ -31,11 +26,6 @@ export class CreateFavouriteDto {
   @IsString()
   @IsNotEmpty()
   price: string;
-
-  @ApiProperty()
-  @IsNumber()
-  @IsNotEmpty()
-  rating: number;
 
   @ApiProperty()
   @IsString()
