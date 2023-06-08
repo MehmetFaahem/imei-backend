@@ -116,6 +116,30 @@ export class User {
   password: string;
 
   @Prop({
+    required: [false, 'address must be filled'],
+    type: String,
+    trim: true,
+    default: 'Address',
+  })
+  address: string;
+
+  @Prop({
+    required: [false, 'dateofbirth must be filled'],
+    type: String,
+    trim: true,
+    default: 'Date Of Birth',
+  })
+  dateofbirth: string;
+
+  @Prop({
+    required: [false, 'gender must be filled'],
+    type: String,
+    trim: true,
+    default: 'Gender',
+  })
+  gender: string;
+
+  @Prop({
     required: [false, 'projects should not be empty'],
     type: [CartedProductsSchema],
     default: [],
