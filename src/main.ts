@@ -10,6 +10,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import configuration from './config/configuration';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+const cors = require('cors');
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -34,7 +35,6 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders:
       'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
-    credentials: true,
   });
 
   app.useGlobalPipes(
@@ -57,6 +57,11 @@ async function bootstrap() {
   );
 
   app.setGlobalPrefix(appVersion);
+  const corsOptions = {
+    origin: '*',
+    optionSuccessStatus: 200,
+  };
+  app.use(cors(corsOptions));
 
   const port = config.port || 3000;
   await app.listen(port);
