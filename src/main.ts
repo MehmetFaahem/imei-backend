@@ -12,9 +12,7 @@ import configuration from './config/configuration';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: false,
-  });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const config = configuration.call(this);
   const appVersion = '/api';
 
@@ -27,19 +25,21 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, builder);
   SwaggerModule.setup(appVersion + '/docs', app, document);
 
-  // app.enableCors({
-  //   origin: [
-  //     'https://imeiweb.vercel.app',
-  //     'https://imeiweb.com',
-  //     'http://localhost:3000',
-  //   ],
-  //   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  // });
+  app.enableCors({
+    origin: [
+      'https://imeiweb.vercel.app',
+      'https://imeiweb.com',
+      'http://localhost:3000',
+    ],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders:
+      'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
+    credentials: true,
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
-      whitelist: true,
       transformOptions: {
         enableImplicitConversion: true,
       },
