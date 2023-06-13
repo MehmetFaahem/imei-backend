@@ -12,27 +12,29 @@ import configuration from './config/configuration';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    cors: false,
+  });
   const config = configuration.call(this);
   const appVersion = '/api';
 
   const builder = new DocumentBuilder()
-    .setTitle('MEdi REST API')
-    .setDescription('Medi REST API')
+    .setTitle('IMEI REST API')
+    .setDescription('IMEI REST API')
     .setVersion('1.0')
     .addServer(appVersion)
     .build();
   const document = SwaggerModule.createDocument(app, builder);
   SwaggerModule.setup(appVersion + '/docs', app, document);
 
-  app.enableCors({
-    origin: [
-      'https://imeiweb.vercel.app',
-      'https://imeiweb.com',
-      'http://localhost:3000',
-    ],
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  });
+  // app.enableCors({
+  //   origin: [
+  //     'https://imeiweb.vercel.app',
+  //     'https://imeiweb.com',
+  //     'http://localhost:3000',
+  //   ],
+  //   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  // });
 
   app.useGlobalPipes(
     new ValidationPipe({
