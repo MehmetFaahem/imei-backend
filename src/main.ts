@@ -26,7 +26,11 @@ async function bootstrap() {
   SwaggerModule.setup(appVersion + '/docs', app, document);
 
   app.enableCors({
-    origin: '*',
+    origin: [
+      'https://imeiweb.vercel.app',
+      'https://imeiweb.com',
+      'http://localhost:3000',
+    ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   });
 
