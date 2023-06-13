@@ -26,16 +26,15 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, builder);
   SwaggerModule.setup(appVersion + '/docs', app, document);
 
-  app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
-    next();
-  });
-
   app.enableCors({
+    origin: [
+      'https://imeiweb.vercel.app/',
+      'https://imeiweb.com/',
+      'http://localhost:3000/',
+    ],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: '*',
-    origin: '*',
+    credentials: true,
   });
 
   app.useGlobalPipes(
@@ -58,11 +57,6 @@ async function bootstrap() {
   );
 
   app.setGlobalPrefix(appVersion);
-  // const corsOptions = {
-  //   origin: '*',
-  //   optionSuccessStatus: 200,
-  // };
-  // app.use(cors(corsOptions));
 
   const port = config.port || 3000;
   await app.listen(port);
